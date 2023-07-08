@@ -1,0 +1,7 @@
+.feedContainer{
+    margin: 3rem 8rem;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 5rem;
+    row-gap: 5rem;
+}
