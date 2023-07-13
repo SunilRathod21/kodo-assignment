@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import DropDown from "../DropDown/DropDown";
 import { sortOption } from "../../utils/enum";
 
-const Navbar = () => {
+const Navbar = ({
+  selectedOption,
+  setSelectedOption,
+  handleOptionChange,
+  onSearch,
+}) => {
   const [searchText, setSearchText] = useState("");
-  const [selectedOption, setSelectedOption] = useState(sortOption[0]);
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  let sessionSearch = sessionStorage.getItem("search");
+
+  useEffect(() => {
+    if (sessionSearch) {
+      setSearchText(sessionSearch)
+      onSearch(sessionSearch);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchText === "") {
+      onSearch(searchText);
+    }
+  }, [searchText]);
 
   return (
     <div className="navbar">
-      <h4 className="navbar__brand">Kodo Assignment</h4>
+      {/* <h4 className="navbar__brand">Kodo Assignment</h4> */}
       <div className="navbar__search">
         <input
           type="text"
@@ -20,7 +35,9 @@ const Navbar = () => {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
-        <button className="navbar__btn">Search</button>
+        <button className="navbar__btn" onClick={() => onSearch(searchText)}>
+          Search
+        </button>
       </div>
 
       <div className="drop-down-container">
@@ -29,7 +46,7 @@ const Navbar = () => {
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
           handleOptionChange={handleOptionChange}
-          options = {sortOption}
+          options={sortOption}
         />
       </div>
     </div>
