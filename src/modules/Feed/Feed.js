@@ -75,13 +75,6 @@ const Feed = () => {
           el.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
-      // const searchRegex = new RegExp(searchTerm, "i");
-      // filteredResults = mockData.filter((el) => {
-      //   const jobName = el.name.toLowerCase();
-      //   const jobDescription = el.description.toLowerCase();
-      //   return searchRegex.test(jobName) || searchRegex.test(jobDescription);
-      // });
-
       const searchWords = searchTerm.toLowerCase().split(" ");
       filteredResults = mockData.filter((el) => {
         const jobName = el.name.toLowerCase();
