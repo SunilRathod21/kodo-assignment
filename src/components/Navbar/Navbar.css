@@ -53,9 +53,17 @@ align-items: center;
 
 @media screen and (max-width: 600px) {
     .navbar{
-        padding:0 1rem;
-    }
+        padding:1.5rem;
+        flex-direction: column;
+        height: fit-content;
+        }
     .navbar__search{
-        margin:0 1rem;
+        margin:0 1rem 0 5px;
+        width: 100%;
     }
+
+    .drop-down-container{
+        margin-top: 2rem;
+       align-self: end;
+        }
   }
