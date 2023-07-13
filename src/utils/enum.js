@@ -9,6 +9,6 @@ export const sortOption = [
     },
     {
         label:"Last Edited",
-        value:"last-edited"
+        value:"dateLastEdited"
     }
 ]
