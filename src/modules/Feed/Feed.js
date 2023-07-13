@@ -6,13 +6,14 @@ import { mockData } from "../../utils/mock_data";
 import Pagination from "../../components/Pagination/Pagination";
 import { sortOption } from "../../utils/enum";
 import { sortByDate, sortByName } from "../../utils/utils";
+import NoDataFound from "../../components/NoDataFound/NoDataFound";
 
 const Feed = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [feedData, setFeedData] = useState(mockData);
   const [filteredData, setFilteredData] = useState([]);
   const [searchedData, setSearchedData] = useState([]);
-  const [isSearch,setIsSearch] = useState(false)
+  const [isSearch, setIsSearch] = useState(false);
   const [selectedOption, setSelectedOption] = useState(() => {
     const sortBySession = sessionStorage.getItem("sortBy");
     return sortBySession || sortOption[0];
@@ -55,7 +56,7 @@ const Feed = () => {
       setFeedData(mockData);
       return;
     }
-    setIsSearch(true)
+    setIsSearch(true);
     const isPhraseSearch =
       searchTerm.startsWith('"') && searchTerm.endsWith('"');
     let filteredResults;
@@ -73,16 +74,28 @@ const Feed = () => {
           el.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           el.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
+
+      // const searchRegex = new RegExp(searchTerm, "i");
+      // filteredResults = mockData.filter((el) => {
+      //   const jobName = el.name.toLowerCase();
+      //   const jobDescription = el.description.toLowerCase();
+      //   return searchRegex.test(jobName) || searchRegex.test(jobDescription);
+      // });
+
+      const searchWords = searchTerm.toLowerCase().split(" ");
+      filteredResults = mockData.filter((el) => {
+        const jobName = el.name.toLowerCase();
+        const jobDescription = el.description.toLowerCase();
+        return searchWords.every((word) => {
+          return jobName.includes(word) || jobDescription.includes(word);
+        });
+      });
     }
 
     setSearchedData(filteredResults);
 
-    console.log("after set");
-
     sessionStorage.setItem("search", searchTerm);
   };
-
-  console.log("--->", feedData);
 
   return (
     <>
@@ -92,13 +105,18 @@ const Feed = () => {
         handleOptionChange={handleOptionChange}
         onSearch={onSearch}
       />
-      <FeedContainer mockData={filteredData} />
-      <Table data={filteredData} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      {filteredData.length > 0 && (
+        <>
+          <FeedContainer mockData={filteredData} />
+          <Table data={filteredData} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </>
+      )}
+      {filteredData.length === 0 && <NoDataFound />}
     </>
   );
 };

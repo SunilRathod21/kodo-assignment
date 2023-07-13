@@ -33,6 +33,7 @@
     background-color: white;
     color:#111;
     margin-left: 0.8rem;
+    cursor: pointer;
 }
 
 .drop-down-container{
@@ -50,4 +51,11 @@ align-items: center;
 
 
 
-
+@media screen and (max-width: 600px) {
+    .navbar{
+        padding:0 1rem;
+    }
+    .navbar__search{
+        margin:0 1rem;
+    }
+  }
